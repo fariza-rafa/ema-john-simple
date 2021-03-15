@@ -9,10 +9,10 @@
     color: blue;
     font-weight: 400;
 }
-.main-button{
-    background-color: goldenrod;
+.addcart-btn{
     width: 150px;
+    background-color: goldenrod;
     height: 30px;
-    border: 1px solid darkgray;
-    border-radius: 5px;
+    border: 1px solid gray;
+    cursor:pointer ;
 }

@@ -1,29 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import fakeData from '../../fakeData';
-import { useState } from 'react';
-import './Shop.css';
+import { addToDatabaseCart } from '../../utilities/databaseManager';
+import Cart from '../Cart/Cart';
 import Product from '../Product/Product';
+import './Shop.css';
 
 const Shop = () => {
-    const first10 = fakeData.slice(0,10);
-    const [products, setProducts] = useState(first10);
-
-    const handleAddProduct = (product) =>{
-        console.log('Product added', product);
+    const firstTen = fakeData.slice(0, 11);
+    const [products, setProducts] = useState(firstTen);
+    const [cart, setCart] = useState([]);
+    const handleProduct = (product) => {
+        const newCart = [...cart, product];
+        setCart(newCart);
+        const sameProduct = newCart.filter(pd => pd.key === product.key)
+        const count = sameProduct.length;
+        addToDatabaseCart(product.key, count)
     }
-
-       return (
-        <div className="shop-container">
-            <div className="product-container">
-                {
-                    products.map(pd => <Product
-                        handleAddProduct = {handleAddProduct}
-                        product={pd}></Product>)
-                }
+    return (
+        <div>
+            <div className="shop-container">
+                <div className="product-container">
+                    <ul>
+                        {
+                            products.map(each => <Product
+                                key={each.key}
+                                showAddToCart={true}
+                                product={each}
+                                handleProduct={handleProduct}></Product>)
+                        }
+                    </ul>
+                </div>
+                <div className="cart-container">
+                    <Cart cart={cart} ></Cart>
+                </div>
             </div>
-           <div className="cart-container">
-               <h3>This is cart</h3>
-           </div>
+
         </div>
     );
 };
